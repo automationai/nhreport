@@ -4,7 +4,7 @@ import getopt
 import socket
 import emails
 
-def check_port(ip,port):
+def portstatus(ip,port):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     result = s.connect_ex((ip,port))
     if result == 0:
@@ -12,7 +12,7 @@ def check_port(ip,port):
     else:
         status = 'close'
     s.close()
-    return 'Port {} status on host {} is: {}'.format(port,ip,status)
+    return status
 
 def main(argv):
     ip = ''
@@ -21,6 +21,8 @@ def main(argv):
     result = ''
     sender = ''
     recipient = ''
+    subject = "Network Health Report"
+    body = "Here's your Calgary R&D Lab network health report:"
     host = ''
     help = 'Usage:\n  port_test.py -i <ip> -p <port> [-r <recipient> -s <sender> -t <host>]\n  port_test.py -f <file> [-r <recipient> -s <sender> -t <host>]'
     try:
@@ -48,7 +50,9 @@ def main(argv):
 
     if fn == '':
         if ip !='' and port !=0:
-            result = check_port(ip,port)
+            result = 'Port {} status on host {} is: {}'.format(port,ip,portstatus(ip,port))
+            print(result)
+            body += '\n{}'.format(result)
         else:
             print('Missing options!\n'+help)
     else:
@@ -59,11 +63,11 @@ def main(argv):
                 for line in fh:
                     ip = line.rstrip().split(" ")[0]
                     port = int(line.rstrip().split(" ")[1])
-                    result += '\n' + check_port(ip,port)
+                    result = 'Port {} status on host {} is: {}'.format(port,ip,portstatus(ip,port))
+                    print(result)
+                    body += '\n{}'.format(result)
 
-    print(result.strip()+'\n')
     if len(recipient) != 0 and len(sender) != 0 and len(host) != 0:
-        subject = "Ports status report"
         message = emails.generate_email(sender,recipient,subject,result)
         emails.send_email(message,host)
         print('Notification message sent to {}'.format(recipient))
@@ -73,6 +77,6 @@ def main(argv):
         print('Missing options! Recipent, sender & mail host are all required arguments to send notifications!')
 
 if __name__ == "__main__":
-    print('Network Port Test Tool 1.0! Author: Jason.Pan@Aveva.com\nhttps://github.com/junclimber/utilities\n')
+    print('Network Health Report Tool 0.1 - Author: Jason.Pan@Aveva.com\nhttps://github.com/automationai/nhreport\n')
     main(sys.argv[1:])
     print('\n')

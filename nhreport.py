@@ -59,20 +59,23 @@ def main(argv):
         if ip !='' or port !=0:
             print('Cannot have both -i-p and -f\n'+help)
         else:
-            with open(fn) as fh:
-                for line in fh:
-                    ip = line.rstrip().split(" ")[0]
-                    port = int(line.rstrip().split(" ")[1])
-                    result = 'Port {} status on host {} is: {}'.format(port,ip,portstatus(ip,port))
-                    print(result)
-                    body += '\n{}'.format(result)
+            try:
+                with open(fn) as fh:
+                    for line in fh:
+                        ip = line.rstrip().split(" ")[0]
+                        port = int(line.rstrip().split(" ")[1])
+                        result = 'Port {} status on host {} is: {}'.format(port,ip,portstatus(ip,port))
+                        print(result)
+                        body += '\n{}'.format(result)
+            except IOError as e:
+                print(e)
 
     if len(recipient) != 0 and len(sender) != 0 and len(host) != 0:
         message = emails.generate_email(sender,recipient,subject,result)
         emails.send_email(message,host)
-        print('Notification message sent to {}'.format(recipient))
+        print('\nNotification message sent to {}'.format(recipient))
     elif len(recipient) == 0 and len(sender) == 0 and len(host) == 0:
-        print('Notification options didn\'t set, no messages sent')
+        print('\nNotification options didn\'t set, no messages sent')
     else:
         print('Missing options! Recipent, sender & mail host are all required arguments to send notifications!')
 

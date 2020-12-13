@@ -14,10 +14,6 @@
 ```
 
 ## To do list
-- change names: jason / automation / nhreport (Network Health Report)
-- handle exceptions
-- check_port -> port_status, simplify return value
-- print on screen result line by line
 - cron
 - try windows python result
 - compile windows exe

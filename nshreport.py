@@ -22,11 +22,11 @@ def main(argv):
     sender = ''
     recipient = ''
     subject = "Network Health Report"
-    body = "Here's your Calgary R&D Lab network health report:"
+    body = "Here's your Calgary R&D Lab network services health report:\n"
     host = ''
     help = 'Usage:\n  port_test.py -i <ip> -p <port> [-r <recipient> -s <sender> -t <host>]\n  port_test.py -f <file> [-r <recipient> -s <sender> -t <host>]'
     try:
-        opts, args = getopt.getopt(argv,'hi:p:f:r:s:t:',['ip=','port=','file=','recipient=','sender=','host='])
+        opts, _ = getopt.getopt(argv,'hi:p:f:r:s:t:',['ip=','port=','file=','recipient=','sender=','host='])
         #print(args)
     except getopt.GetoptError:
         print(help)
@@ -71,15 +71,16 @@ def main(argv):
                 print(e)
 
     if len(recipient) != 0 and len(sender) != 0 and len(host) != 0:
-        message = emails.generate_email(sender,recipient,subject,result)
-        emails.send_email(message,host)
-        print('\nNotification message sent to {}'.format(recipient))
+        message = emails.generate_email(sender,recipient,subject,body)
+        send_status = emails.send_email(message,host)
+        if send_status == 1:
+            print('\nNotification message sent to {}'.format(recipient))
     elif len(recipient) == 0 and len(sender) == 0 and len(host) == 0:
         print('\nNotification options didn\'t set, no messages sent')
     else:
         print('Missing options! Recipent, sender & mail host are all required arguments to send notifications!')
 
 if __name__ == "__main__":
-    print('Network Health Report Tool 0.1 - Author: Jason.Pan@Aveva.com\nhttps://github.com/automationai/nhreport\n')
+    print('Network Services Health Report Tool 0.1 - Author: Jason.Pan@Aveva.com\nhttps://github.com/automationai/nshreport\n')
     main(sys.argv[1:])
     print('\n')

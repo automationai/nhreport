@@ -2,6 +2,7 @@ import email.message
 import mimetypes
 import os.path
 import smtplib
+import socket
 
 def generate_email(sender, recipient, subject, body, attachment_path=''):
     message = email.message.EmailMessage()
@@ -24,7 +25,11 @@ def generate_email(sender, recipient, subject, body, attachment_path=''):
     return message
 
 def send_email(message,server_name='localhost'):
-    mail_server = smtplib.SMTP(server_name)
-    mail_server.send_message(message)
-    mail_server.quit()
- 
+    try:
+        mail_server = smtplib.SMTP(server_name)
+        mail_server.send_message(message)
+        mail_server.quit()
+        return 1
+    except socket.error:
+        print('\nCould not connect to smtp server! no messages sent!')
+        return 0

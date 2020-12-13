@@ -29,7 +29,6 @@ def send_email(message,server_name='localhost'):
         mail_server = smtplib.SMTP(server_name)
         mail_server.send_message(message)
         mail_server.quit()
-        return 1
+        return True
     except socket.error:
-        print('\nCould not connect to smtp server! no messages sent!')
-        return 0
+        return False

@@ -4,7 +4,6 @@ import configparser
 import socket
 import emails
 import re
-import sys
 import os
 
 def portstatus(ip,port):
@@ -18,8 +17,26 @@ def portstatus(ip,port):
     return status
 
 def main():
+    path = os.path.join(os.path.expanduser('~'),'.nshconfig')
+    config = configparser.ConfigParser()
+    if not os.path.exists(path) or os.stat(path).st_size == 0:
+        config['DEFAULT'] = {
+            "company": "Calgary R&D Lab",
+            "recipient": "junpanca@aveva.com",
+            "sender": "automation-noreply@aveva.com",
+            "smtp_server": "localhost"
+        }
+        try:
+            with open(path,'w') as configfile:
+                config.write(configfile)
+        except IOError as e:
+            print(e)
+            return
+        print('First time run! Configure file created!\nPlease update it before re-running the program to use the default setting!\nConfigure file location: {}'.format(path))
+        return
+
     body = 'Network Services Health Report Tool 0.1 - Author: Jason.Pan@Aveva.com\n'
-    body += 'https://github.com/automationai/nshreport\n\n'
+    body += 'https://github.com/AutomationAI/nshreport\n\n'
     body += "Here's your network services health report:"
 
     parser = argparse.ArgumentParser()
@@ -31,6 +48,7 @@ def main():
     group2.add_argument('-r','--recipient',help='Notification email recipient')
     group2.add_argument('-s','--sender',help='Notification email sender')
     group2.add_argument('-m','--smtp_server',help='SMTP server IP address')
+    parser.add_argument('-v','--version',action='version',version='%(prog)s 0.1')
     args = parser.parse_args()
 
     print(body)
@@ -61,19 +79,23 @@ def main():
                     
         except IOError as e:
             print('\n{}'.format(e))
-            sys.exit()
+            return
 
     if args.notification:
-        config = configparser.ConfigParser()
-        config.read(os.path.join(os.path.expanduser('~'),'nshreport.ini'))
+        if len(config.read(path)) < 1:
+            try:
+                raise ValueError("Error: Failed to open configure file, please check permission: {}".format(path))
+            except ValueError as e:
+                print('\n{}'.format(e))
+                return
         try:
             company = config['DEFAULT']['company'].strip()
             recipient = config['DEFAULT']['recipient'].strip()
             sender = config['DEFAULT']['sender'].strip()
             smtp_server = config['DEFAULT']['smtp_server'].strip()
-        except KeyError:
-            print('\nPlease create or copy nshreport.ini in you home folder before sending notification!\nRefer https://github.com/automationai/nshreport/blob/main/README.md')
-            sys.exit()
+        except KeyError as e:
+            print('\nError: Couldnot find key {} in {}'.format(e,path))
+            return
         subject = "{} Network Service Health Report".format(company)
         body += "\n\nReport provided by {} IT Automation Team".format(company)
 
@@ -113,4 +135,4 @@ def main():
         
 if __name__ == "__main__":
     main()
-    print('\n')
+    #print('\n')

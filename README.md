@@ -1,5 +1,5 @@
 # Network Service Health Report Tool
-Current Version: 0.1
+Current Version: 0.11
 ## Use Cases
 ### Monitor the Network Serivce Health Status
 This tool can ben scheduled to run daily with cron or Windows Task Scheduler to send notfications in case there's any network serivce port stopped working. Work proactively to ensure the fulfillment of your SLA!
@@ -14,7 +14,7 @@ It would reduce work load significantly when doing UAT test after a major networ
 ### Step 1: Download the souce code (developer) or executables based on your platform (non developer)
 
 #### Source code
-`git clone https://github.com/automationai/nshreport.git`
+`git clone https://github.com/AutomationAI/nshreport.git`
 
 #### Windows Executable
 [Click here to download Window executable file](https://github.com/automationai/nshreport/raw/main/dist/nshreport.exe)

@@ -28,7 +28,7 @@ Tested on Debian 10 & Ubuntu 20, if you have other versions of linux, let me kno
 
 #### Mac
 
-Currently don't have a mac to generate the Mac executables. If you can help to generate the executabls for Mac from the source code. Highly appreciated!
+Currently don't have a mac to generate the Mac executables.
 
 ### Step 2: Open a command window, run nshreport.py (developer), ./nshreport (linux) or nshreport.exe (windows) first time
 A configured file will be create under your user home foler. Below is the screenshot from linux machine, for the windows, the location is different, you can find it on screen when you run it.

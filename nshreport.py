@@ -58,7 +58,7 @@ def main():
     print(head)
 
     if args.address is not None:
-        if re.search(r'^[\w.]+:\d+$',args.address):
+        if re.search(r'^[\w.-]+:\d+$',args.address):
             ip = args.address.split(':')[0]
             port = int(args.address.split(':')[1])
             status = portstatus(ip,port)
@@ -73,7 +73,7 @@ def main():
                 result_closed = '\n***Closed ports found***'
                 for line in fh:
                     n += 1
-                    if re.search(r'^[\w.]+ \d+$',line):
+                    if re.search(r'^[\w.-]+ \d+$',line):
                         ip = line.rstrip().split(" ")[0]
                         port = int(line.rstrip().split(" ")[1])
                         status = portstatus(ip,port)

@@ -52,7 +52,7 @@ def main():
     group2.add_argument('-s','--sender',help='Notification email sender')
     group2.add_argument('-m','--smtp_server',help='SMTP (Mail) server IP address')
     parser.add_argument('-v','--verbose',action='store_true',help='Increase ouput verbosity on screen')
-    parser.add_argument('-V','--version',action='version',version='%(prog)s 0.11')
+    parser.add_argument('-V','--version',action='version',version='%(prog)s 0.1.2')
     args = parser.parse_args()
 
     print(head)

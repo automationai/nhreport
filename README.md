@@ -1,5 +1,5 @@
 # Network Service Health Report Tool
-Current Version: 0.1.2
+Current Version: 0.1.3
 ## Use Cases
 ### Monitor the Network Serivce Health Status
 This tool can ben scheduled to run daily with cron or Windows Task Scheduler to send notfications in case there's any network serivce port stopped working. Work proactively to ensure the fulfillment of your SLA!
@@ -85,6 +85,9 @@ result:
 `nshreport -f <file> -n`
 
 ## Change logs
+### 0.1.3
+- Allow comments start with # or //
+
 ### 0.1.2
 - Add flag -V as the short option of --version
 - Allow hythen '-' in the domain name

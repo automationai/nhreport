@@ -12,7 +12,7 @@ def portstatus(ip,port):
     if result == 0:
         status = 'open'
     else:
-        status = 'close'
+        status = 'closed or filtered'
     s.close()
     return status
 
@@ -35,7 +35,7 @@ def main():
         print('First time run! Configure file created!\nPlease update it before re-running the program to use the default setting!\nConfigure file location: {}'.format(path))
         return
 
-    head = 'Network Services Health Report Tool 0.1 - Author: Jason.Pan@Aveva.com\n'
+    head = 'Network Services Health Report Tool 0.1.3 - Author: Jason.Pan@Aveva.com\n'
     head += 'https://github.com/AutomationAI/nshreport\n\n'
     head += "Here's your network services health report:"
     body = ''
@@ -52,7 +52,7 @@ def main():
     group2.add_argument('-s','--sender',help='Notification email sender')
     group2.add_argument('-m','--smtp_server',help='SMTP (Mail) server IP address')
     parser.add_argument('-v','--verbose',action='store_true',help='Increase ouput verbosity on screen')
-    parser.add_argument('-V','--version',action='version',version='%(prog)s 0.1.2')
+    parser.add_argument('-V','--version',action='version',version='%(prog)s 0.1.3')
     args = parser.parse_args()
 
     print(head)
@@ -84,7 +84,7 @@ def main():
                             result_closed += '\n- Port {} status on host {} is: {}'.format(port,ip,status)
                         if args.verbose:
                             print('- Port {} status on host {} is: {}'.format(port,ip,status))
-                    else:
+                    elif re.search(r'^((?!#|\/\/).)*$',line):
                         print('Wrong address format in line {}: {}! it should be <ip> <port>'.format(n,line.rstrip()))
                         return
                 if closed != 0:

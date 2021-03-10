@@ -1,0 +1,10 @@
+# comment line with #
+// comment line with //
+# IP & port splited by space
+127.0.0.1 25
+# IP & port splited by :
+127.0.0.1:25
+192.168.1.98:22
+# use domain name instead of IP
+www.google.com 443
+www.hp.com:80

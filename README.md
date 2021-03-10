@@ -5,7 +5,7 @@ Current Version: 0.1.3
 This tool can ben scheduled to run daily with cron or Windows Task Scheduler to send notfications in case there's any network serivce port stopped working. Work proactively to ensure the fulfillment of your SLA!
 
 ### Network service port testing after major changes
-It would reduce work load significantly when doing UAT test after a major network change!
+It would reduce work load significantly when doing UAT test after a major network change or power outage!
 
 ### Sample Email Report
 ![sample](sample.png)
@@ -19,12 +19,12 @@ It would reduce work load significantly when doing UAT test after a major networ
 #### Windows Executable
 [Click here to download Window executable file](https://github.com/automationai/nshreport/raw/main/dist/nshreport.exe)
 
-Tested on Windows 10, if you have other versions of windows, let me know the result, there's possiblility that old version of executables need to be generated separately.
+Tested on Windows 10. Other versions of Windows especially Windows Servers haven't been tested! Let me know if you have issues on other versions of Windows.
 
 #### Debian Executable
 [Click here to download debian executable file](https://github.com/automationai/nshreport/raw/main/dist/nshreport)
 
-Tested on Debian 10 & Ubuntu 20, if you have other versions of linux, let me know the result, there's possiblility that old version of executables need to be generated separately.
+Tested on Debian 10 & Ubuntu 20. Other versions of Linux haven't been tested! Let me know if you have issues on other versions of Linux.
 
 #### Mac
 
@@ -42,7 +42,7 @@ Sample configuration file:
 
 ![ini](ini.png)
 
-### Step 4: (Optional) Create an address file to test with the format as below. In his example we call it ip_list
+### Step 4: (Optional) Create an address file to test with the format as below. In this example we call it ip_port_list
 You can ignore this step if you don't need to use -f argument to scan all the addresses all at once
 
 ![source](source.png)
@@ -74,8 +74,8 @@ result:
 
 ### Test with all IPs & ports in one file
 *Above Step 4 is required to continue from here*
-#### Test IP & Port loaded from a file
-`nshreport -f <file>`
+#### Test IP & Port loaded from a file (-v to show details on the screen)
+`nshreport -f <file> -v`
 #### Test IP & Port loaded from a file and send email notification with command line
 `nshreport -f <file> -n -r <recipient> -s <sender> -m <smtp_server>`
 
@@ -87,6 +87,7 @@ result:
 ## Change logs
 ### 0.1.3
 - Allow comments start with # or //
+- Allow both space and : in IP input file
 
 ### 0.1.2
 - Add flag -V as the short option of --version

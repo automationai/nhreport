@@ -35,7 +35,7 @@ def main():
         print('First time run! Configure file created!\nPlease update it before re-running the program to use the default setting!\nConfigure file location: {}'.format(path))
         return
 
-    head = 'Network Services Health Report Tool 0.1.3 - Author: Jason.Pan@Aveva.com\n'
+    head = 'Network Services Health Report Tool 0.1.4 - Author: Jason.Pan@Aveva.com\n'
     head += 'https://github.com/AutomationAI/nshreport\n\n'
     head += "Here's your network services health report:"
     body = ''
@@ -52,7 +52,7 @@ def main():
     group2.add_argument('-s','--sender',help='Notification email sender')
     group2.add_argument('-m','--smtp_server',help='SMTP (Mail) server IP address')
     parser.add_argument('-v','--verbose',action='store_true',help='Increase ouput verbosity on screen')
-    parser.add_argument('-V','--version',action='version',version='%(prog)s 0.1.3')
+    parser.add_argument('-V','--version',action='version',version='%(prog)s 0.1.4')
     args = parser.parse_args()
 
     print(head)
@@ -70,12 +70,16 @@ def main():
         try:
             with open(args.file) as fh:
                 n = 0
-                result_closed = '\n***Closed ports found***'
+                result_closed = '\n***Closed or filtered ports found***'
                 for line in fh:
                     n += 1
-                    if re.search(r'^[\w.-]+ \d+$',line):
-                        ip = line.rstrip().split(" ")[0]
-                        port = int(line.rstrip().split(" ")[1])
+                    if re.search(r'^[\w.-]+[ :]\d+$',line):
+                        if re.search(r':',line):
+                            split_symbol = ':'
+                        else:
+                            split_symbol = ' '
+                        ip = line.rstrip().split(split_symbol)[0]
+                        port = int(line.rstrip().split(split_symbol)[1])
                         status = portstatus(ip,port)
                         if status == 'open':
                             opened += 1
@@ -85,7 +89,7 @@ def main():
                         if args.verbose:
                             print('- Port {} status on host {} is: {}'.format(port,ip,status))
                     elif re.search(r'^((?!#|\/\/).)*$',line):
-                        print('Wrong address format in line {}: {}! it should be <ip> <port>'.format(n,line.rstrip()))
+                        print('Wrong address format in line {}: {}! it should be <ip> <port> or <ip>:<port>'.format(n,line.rstrip()))
                         return
                 if closed != 0:
                     result_closed = '\n=> Result: {} opened ports and {} closed ports'.format(opened,closed) + result_closed

@@ -88,7 +88,7 @@ def main():
                             result_closed += '\n- Port {} status on host {} is: {}'.format(port,ip,status)
                         if args.verbose:
                             print('- Port {} status on host {} is: {}'.format(port,ip,status))
-                    elif re.search(r'^((?!#|\/\/).)*$',line):
+                    elif re.search(r'^((?!#|\/\/).)*$',line) and not re.search(r'^(?:[\t ]*(?:\r?\n|\r))+',line):
                         print('Wrong address format in line {}: {}! it should be <ip> <port> or <ip>:<port>'.format(n,line.rstrip()))
                         return
                 if closed != 0:

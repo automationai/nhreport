@@ -1,5 +1,5 @@
 # Network Service Health Report Tool
-Current Version: 0.1.3
+Current Version: 0.1.4
 ## Use Cases
 ### Monitor the Network Serivce Health Status
 This tool can ben scheduled to run daily with cron or Windows Task Scheduler to send notfications in case there's any network serivce port stopped working. Work proactively to ensure the fulfillment of your SLA!
@@ -55,7 +55,7 @@ result:
 ![run1](run1.png)
 
 ### (Optional) Step 6: Sample run 2:
-`./nshreport -f ip_list -n`
+`./nshreport -f ip_port_list -n`
 
 result:
 
@@ -85,9 +85,11 @@ result:
 `nshreport -f <file> -n`
 
 ## Change logs
+### 0.1.4
+- Allow empty lines in ip_port_list file
 ### 0.1.3
-- Allow comments start with # or //
-- Allow both space and : in IP input file
+- Allow comments start with # or // in ip_port_list file
+- Allow both space and : in ip_port_list file
 
 ### 0.1.2
 - Add flag -V as the short option of --version
